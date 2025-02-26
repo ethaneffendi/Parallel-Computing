@@ -34,10 +34,43 @@
     Restricting execution of these special portions of code, called critical sections, to one thread at a time prevents data conflicts that might happen when two or more threads are reading and writing from the same shared memory.
     For working with threads and implementing multithreading, Python has a module called <code>threading</code>.
   </p>
-
   <p class="text">
-    
+    For true parallelism in Python, one must work with processes.
+    Multiprocessing is the practice of distributing concurrent processes among multiple CPUs (usually the cores in a multicore processor) that work in parallel.
+    In Python, working with processes and implementing multiprocessing can be done using the <code>multiprocessing</code> module. Downsides to multiprocessing exist, however.
+    For example, concurrent processes do not share memory.
+    They communicate with one another through interprocess communication methods provided by the operating system.
+    Thus, communication among processes is not as efficient or quick as communication among threads.
+    Also, a process is heavier than a thread.
+    Context switching between different processes (pausing the current process to work on another) takes more time than context switching between different threads.
   </p>
+  <img src="Threads and Processes in Python/Threads and Processes.png" width=45%>
+  <hr>
 
+  <h1 class="text">The <code>threading</code> Module</h1>
+  <p class="text">
+    To create and customize thread objects using <code>threading</code>, one must follow several steps.
+  </p>
+  <ol>
+    <li>
+      Define a subclass of <code>threading.Thread</code>.
+    </li>
+    <li>
+      Override <code>__init__(self [,args])</code> in the subclass of <code>threading.Thread</code> for custom parameters that will be used to provide the thread with needed data.
+    </li>
+    <li>
+      Override <code>run(self [,args])</code> to define what a thread should do when executed.
+    </li>
+    <li>
+      Execute the thread by calling its <code>start()</code> function, which will in turn call <code>run()</code>.
+    </li>
+    <li>
+      To make sure that Python waits for all threads that have been created and executed to finish before it moves to the sequentially next part of the program, call the <code>join()</code> function on each thread.
+    </li>
+  </ol>
+  <script src="https://gist.github.com/ethaneffendi/f7e23ae9de8d76afaf149b36e921facd.js"></script>
+  <hr>
+
+  <h1>The <code>multiprocessing</code> Module</h1>
 </body>
 </html>
