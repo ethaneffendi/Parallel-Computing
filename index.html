@@ -12,8 +12,9 @@
   <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-
   <hr>
+
+  <!--Threads and Processes in Python-->
   <h1 class="text">Threads and Processes in Python</h1>
   <p class="text">
     In Python, a running instance of a full application is called a process.
@@ -44,9 +45,10 @@
     Also, a process is heavier than a thread.
     Context switching between different processes (pausing the current process to work on another) takes more time than context switching between different threads.
   </p>
-  <img src="Threads and Processes in Python/Threads and Processes.png" width=45%>
+  <img src="(1) Threads and Processes in Python/Threads and Processes.png" width=45%>
   <hr>
 
+  <!--The threading Module-->
   <h1 class="text">The <code>threading</code> Module</h1>
   <p class="text">
     To create and customize thread objects using <code>threading</code>, one must follow several steps.
@@ -69,8 +71,50 @@
     </li>
   </ol>
   <script src="https://gist.github.com/ethaneffendi/f7e23ae9de8d76afaf149b36e921facd.js"></script>
+  <p class="text">
+    The code above makes a thread for each job that needs to be done.
+    What if a thousand tasks need to be completed though?
+    Wouldn't it be more efficient to just have five or so threads that split the work instead of making one thousand threads?
+    The solution is using Python's <code>queue</code> module.
+    Queues are a FIFO data structure that are useful for doing the same job on thousands of different inputs.
+    Each thread's <code>run()</code> function will use a while true loop to pop an input out of the queue (try-except-else block) and process it using another function.
+  </p>
   <hr>
 
-  <h1>The <code>multiprocessing</code> Module</h1>
+  <!--The multiprocessing Module-->
+  <h1 class="text">The <code>multiprocessing</code> Module</h1>
+  <p class="text">
+    Similar to working with threads in <code>threading</code>, one can make a process in <code>multiprocessing</code> by subclassing <code>multiprocessing.Process</code>, overriding the subclass's initializer, overriding the subclass's <code>run</code> function, and calling <code>start()</code> and <code>join()</code> in Python's main process.
+    However, an alternative way of making processes exists. In Python's main process, one can instantiate <code>Process</code> with a <code>target</code> argument that is the function the process should run. The process receives the arguments of the function passed as an argument to the <code>target</code> parameter via a tuple passed to the <code>args</code> parameter of the constructor.
+  </p>
+  <script src="https://gist.github.com/ethaneffendi/45bb3474df2d4031346264933ada804f.js"></script>
+  <p class="text">
+    Python's <code>multiprocessing</code> module provides another solution for running processes in parallel. If the same function needs to be run on a collection of data, one should use the <code>multithreading.Pool</code> class.
+    It takes a function and a collection. It runs the function on each member of the collectin as input and returns an output collection such that every element of the output corresponds by index to every element of the input.
+  </p>
+  <script src="https://gist.github.com/ethaneffendi/9186850b9b86677b123de3fa257dec05.js"></script>
+  <hr>
+
+  <!--A Very Brief Introduction to Patterns-->
+  <h1 class="text">A Very Brief Introduction to Patterns</h1>
+  <p class="text">
+    Just as there are numerous data structures and algorithms to choose from when solving sorting or searching problems, there are many different patterns one can use for implementing parallelism in any program.
+    Knowing which pattern fits which problem is key to being a master of parallelism. Thus, exploring different patterns and their uses will be the main focus from here on out.
+  </p>
+  <hr>
+
+  <!--Map-->
+  <h1 class="text">Map</h1>
+  <p class="text">
+    Map is one of many parallel patterns.
+    It is the parallel equivalent of the kind of for loop in which each iteration of the loop body is independent of the others.
+    What happens in the loop body of map's serial equivalent is called the elemental function in parallelism terms.
+    A map takes in a collection as input.
+    Each instance of the elemental function processes an entry from the input collection to produce an output collection of equal shape.
+  </p>
+  <img src="(5) Map/Parallel Map vs. For Loop With Independent Iterations.png" width=45%>
+  <p>
+    Map is useful for applications like computing the Mandelbrot set, ray tracing, and Monte Carlo sampling.
+  </p>
 </body>
 </html>
