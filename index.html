@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="" />
+  <title>Supervised Learning</title>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+  <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+  <hr>
+  <h1 class="text">Threads and Processes in Python</h1>
+  <p class="text">
+    In Python, a running instance of a full application is called a process.
+    One process can be broken up into many smaller tasks that work together to make the full app run smoothly.
+    These smaller tasks are called threads.
+    The operating system a process is being run in manages how and when threads are executed.
+  </p>
+  <p class="text">
+    Single-threading is the practice of having the multiple threads in one process run sequentially.
+    Each thread waits for the one before it to finish before executing.
+    If one thread takes a long time to execute, however, it becomes a bottleneck.
+    The solution to this inefficiency is multithreading.
+    Multithreading is the practice of allowing more than one thread to execute simultaneously.
+    In particular, multiple threads are executed simultaneously using a technique called time slicing.
+    The CPU switches between working on different threads so quickly that it seems as though the threads are running in parallel.
+    Threads in the same process share the same resources (namely memory), so synchronization is necessary.
+    Mechanisms exist for ensuring that no more than one concurrent thread can process and execute a particular portion of a program at once.
+    Restricting execution of these special portions of code, called critical sections, to one thread at a time prevents data conflicts that might happen when two or more threads are reading and writing from the same shared memory.
+    For working with threads and implementing multithreading, Python has a module called <code>threading</code>.
+  </p>
+
+  <p class="text">
+    
+  </p>
+
+</body>
+</html>
