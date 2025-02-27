@@ -113,8 +113,64 @@
     Each instance of the elemental function processes an entry from the input collection to produce an output collection of equal shape.
   </p>
   <img src="(5) Map/Parallel Map vs. For Loop With Independent Iterations.png" width=45%>
-  <p>
+  <p class="text">
     Map is useful for applications like computing the Mandelbrot set, ray tracing, and Monte Carlo sampling.
+    It can be implemented using <code>multiprocessing</code>'s <code>Pool</code> class.
+  </p class="text">
+  <h2>Mandelbrot Set</h2>
+  <p class="text">
+    The Mandelbrot set is a very special set in mathematics that is an icon of the study of fractals.
+    Its fascinating history and various details are best explored in Robert Devaney's article: https://www.webpages.uidaho.edu/~stevel/565/literature/Unveiling%20the%20Mandelbrot%20Set.pdf.
+    Computing what complex numbers are a part of the Mandelbrot set and then displaying the set graphically is incredibly slow when done using a sequential program.
+    Luckily, the map is the right parallel pattern for speeding up working with the Mandelbrot set.
   </p>
+  <p class="text">
+    How does the Mandelbrot set work though? It is produced using iteration, the process of repeatedly applying a mathematical function.
+    The function used to produce the Mandelbrot set is a quadratic polynomial \(x^2 + c\) when \(c\) is a constant. To iterate \(f(x)=x^2+c\), a seed, some starter \(x\) value called \(x_0\) is needed.
+    \(x_0, x_1=(x_0)^2+c, x_2=(x_1)^2+c, ... , x_n = (x_{n-1})^2+c\).
+  </p>
+  <p class="text">
+    Sometimes, orbits oscillate. For example, take the orbit of \(0\) under iteration of \(f(x)=x^2-1\).
+    \(x_0 = 0, x_1 = (0)^-1=-1, x_2=(-1)^2-1=0, x_3=(0)^2-1=-1\).
+    Other times, orbits, such as the orbit of \(0\) under iteration of \(f(x)=x^2\), remain fixed for all iterations.
+    \(x_0, x_1=(0)^2=0, x_2=(0)^2=0, x_3=(0)^3=0\).
+    Still, there are other orbits such as the orbit of \(0\) under iteration of \(f(x)=x^2+1\) that shoot to infinity.
+    \(x_0=0, x_1=(0)^2+1=1, x_2=(1)^2+1=2, x_3=(2)^2+1=5, x_4=(5)^2+1=26, x_5=(26)^2+1=677, ...\).
+  </p>
+  <p class="text">
+    The Mandelbrot set consists of all compex \(c\) values for which the corresponding orbit of \(0\) under \(x^2+c\) does not escape to infinity.
+  </p>
+  <p class="text">
+    The algorithm for computing and then visualizing the Mandelbrot set can be summarized in five steps.
+    Because these steps are performed on many \(c\) values, map may be applied to speed the job up.
+  </p>
+  <ol class="text">
+    <li>Let \(c\) be a complex constant.</li>
+    <li>Let \(x_0\) be the first complex iteration.</li>
+    <li>Iterate once by letting \(x_n=x_{n-1}^2+c\).</li>
+    <li>Repeat step 3 until one of the following occurs.</li>
+    <ol>
+      <li>The modulus of \(x_n\) exceeds some big number \(\epsilon\). This is the test for divergence. \(c\) is not a member of the Mandelbrot set (say that it should be colored white in the visualization on the complex plane of \(c\) values).</li>
+      <li>The number of iterations exceeds a given value. This is the test for convergence. \(c\) is a part of the Mandelbrot set, so it should be colored black in the visualization.</li>
+    </ol>
+    <li>Draw the points.</li>
+  </ol>
+  <img src="(5) Map/Mandelbrot Set/Mandelbrot Set Visualization.png" width=30%>
+  <p class="text">
+    The code for computing and visualization the Mandelbrot set in sequence is shown below.
+  </p>
+  <script src="https://gist.github.com/ethaneffendi/16d21b67cf52fd07819f685077369666.js"></script>
+  <p class="text">
+    the code for computing the set in parallel using map and then visualizing it is shown below.
+  </p>
+  <script src="https://gist.github.com/ethaneffendi/ab95c58e1684c7576783887d5f1f815e.js"></script>
+  <p class="text">
+    Computing for the set in parallel takes on average around 0.53 seconds.
+    Computing for the set in series takes on average around 1.77 seconds.
+    The program in parallel is a little more than three times faster than the program in serial.
+    The device used was Apple's base model A2338 laptop. 
+  </p>
+
+
 </body>
 </html>
