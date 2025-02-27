@@ -170,6 +170,78 @@
     The program in parallel is a little more than three times faster than the program in serial.
     The device used was Apple's base model A2338 laptop.
   </p>
+  <h2 class="text">Ray Tracing</h2>
+  <p class="text">
+    When computers need to take a 2D snapshot of a 3D space, computers use a technique called ray tracing.
+    The computer has its eye at a point \(O(0,0,0)\).
+    It will look through a frame some distance \(d\) in front.
+    The frame has the dimensions \(V_w\) by \(V_h\).
+    When \(V_w=V_h=d=1\), the camera has a \(53°\) field of vision.
+    This frame is called the viewport.
+  </p>
+  <p class="text">
+    The computer should cut the viewport into squares.
+    Then, it should determine the color in each square and copy it to the corresponding pixel in an image.
+    That image will be the computer's 2D snapshot of the 3D space.
+  </p>
+  <p class="text">
+    To determine which square on the viewport corresponds to which pixel in the image to be produced, one should use the formulas \(V_x=C_x\cdot\frac{V_w}{C_w}\) and \(V_y=C_y\cdot\frac{V_h}{C_h}\) when \(C_x\) and \(C_y\) are coordinates of the pixel in question.
+    \((V_x, V_y, V_z)\) is the corresponding point on the viewport when \(V_z=1\).
+  </p>
+  <p class="text">
+    Next, the computer must determine what color of light comes through \((V_x, V_y, V_z)\).
+    The computer does this by running a ray through \(O(0,0,0)\) and \((V_x, V_y, V_z)\) until the ray hits some object.
+    The color of the object where the object is it becomes the color of \((V_x, V_y, V_z)\).
+  </p>
+  <p class="text">
+    A ray passes through \(O\) and its direction is \((V-O)\) when \(V\) is the point on the viewport that the ray passes through.
+    The equation of the ray is \(P=O+t(V-O)\) when \(t\) is a real number such that \(t\in(-\infty, \infty)\).
+    By plugging in every value of \(t\) on \((-\infty, \infty)\), one gets every point \(P\) on the ray.
+    For notational simplicity, direction \((V-O)\) may be written as \(\vec{D}\).
+  </p>
+  <p class="text">
+    To begin experimenting, one needs objects in the 3D scene for rays to hit.
+    Spheres are easy objects to begin working with.
+    Spheres are sets of points that lie a fixed distance away from a fixed center \(C\).
+    The distance from the center to any point on the sphere is the sphere's radius \(r\).
+    \(r=distance(P,C)\).
+    The distance between \(P\) and \(C\) is the length of the vector from \(P\) to \(C\).
+    \(|P-C|=r\).
+    The length of the vector is the square root of its dot product with itself: \(\sqrt{\left\langle P-C, P-C \right\rangle}\).
+    Thus, \(r^2 = \left\langle P-C, P-C \right\rangle\).
+  </p>
+  <p class="text">
+    Now, with \(P=O+t\vec{D}\) and \(r^2 = \left\langle P-C, P-C\right\rangle \), one may determine whether or not a ray and sphere intersect (and if so, where).
+    By substitution, \(r^2 = \left\langle O+t\vec{D}-C, O+t\vec{D}-C\right\rangle \).
+    Finding the values of \(t\) that satisfy \(r^2 = \left\langle O+t\vec{D}-C, O+t\vec{D}-C\right\rangle\) allow for substitution to the ray equation to find all points of intersection.
+    Let \(\vec{CO}=O-C\) for notational simplicity.
+    \(r^2 = \left\langle \vec{CO}, \vec{CO} \right\rangle + \left\langle t\vec{D}, \vec{CO} \right\rangle + \left\langle \vec{CO}, t\vec{D} \right\rangle + \left\langle t\vec{D}, t\vec{D} \right\rangle \).
+    \(t^2 \left\langle \vec{D}, \vec{D} \right\rangle + t(2\left\langle \vec{CO}, \vec{D} \right\rangle) + \left\langle \vec{CO}, \vec{CO} \right\rangle -r^2 = 0\).
+  </class>
+  <p class="text">
+    Now, let \(a = \left\langle \vec{D}, \vec{D} \right\rangle\), \(b = 2\left\langle \vec{CO}, \vec{D} \right\rangle\), and \( \left\langle \vec{CO}, \vec{CO} \right\rangle\ - r^2\) so that \(at^2 + bt + c = 0\).
+    The quadratic equation can be solved for where a ray and sphere intersect. If they intersect twice (the ray goes through the sphere instead of skiffing as a tangent), the closer \(t\) should be chosen.
+  </p>
+  <p class="text">
+    The product of code below is shown in this image: 
+  </p>
+  <img src="(5) Map/Ray Tracing/Ray Traced Image.png" width=30%>
+  <p class="text">
+    A serial program for ray tracing is shown below.
+  </p>
+  <script src="https://gist.github.com/ethaneffendi/7beba9ee0d581450669929c5c5ba0481.js"></script>
+  <p class="text">
+    The program written with the implementation of map is shown below.
+  </p>
+  <script src="https://gist.github.com/ethaneffendi/c2419f75ed87d8082cd407ea7073ba3e.js"></script>
+  <p class="text">
+    The serial program took an average of about 18 seconds to run whereas the parallel program took an average of about 5 seconds to run.
+    Thus, the parallel program is more than three times faster on the parameters provided.
+    Tests were done using Apple's base model A2338 laptop.  
+  </p>
+  <hr>
+
+
 
 
 </body>
